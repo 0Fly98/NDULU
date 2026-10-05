@@ -1,0 +1,6 @@
+{
+  "name": "Ndulu General Dealers",
+  "description": "Premium industrial inventory catalog, custom quotation builder, and AI safety advisor for mining PPE and hardware supply.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

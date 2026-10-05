@@ -1,0 +1,139 @@
+{
+  "entities": {
+    "Quote": {
+      "title": "Quote",
+      "description": "Industrial procurement quotation or scope request submitted by clients",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique quotation reference identifier",
+          "minLength": 3,
+          "maxLength": 64
+        },
+        "clientName": {
+          "type": "string",
+          "description": "Primary contact individual name",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "clientEmail": {
+          "type": "string",
+          "description": "Contact email address for quotes and tenders",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "clientCompany": {
+          "type": "string",
+          "description": "Mining entity, contractor, or business name",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp formatted as ISO string",
+          "maxLength": 64
+        },
+        "status": {
+          "type": "string",
+          "description": "Operational review state",
+          "enum": ["Pending", "Under Review", "Quoted", "Approved", "Declined", "Closed", "Rejected"]
+        },
+        "totalEstimate": {
+          "type": "number",
+          "description": "Total procurement estimated valuation"
+        },
+        "items": {
+          "type": "array",
+          "description": "Collection of configured items and service requisitions"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Optional Firebase Authentication user identifier",
+          "maxLength": 128
+        },
+        "adminNotes": {
+          "type": "string",
+          "description": "Internal procurement and logistics desk remarks",
+          "maxLength": 2048
+        },
+        "reviewedBy": {
+          "type": "string",
+          "description": "Operations officer or desk authority who handled review",
+          "maxLength": 128
+        },
+        "reviewedAt": {
+          "type": "string",
+          "description": "Timestamp when admin completed review",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "clientName", "clientEmail", "clientCompany", "createdAt", "status", "totalEstimate", "items"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Designated administrator permissions record",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Authorized administrator email address",
+          "maxLength": 128
+        },
+        "role": {
+          "type": "string",
+          "description": "Administrative authority level",
+          "enum": ["super_admin", "admin", "operations_desk"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["email", "role"]
+    },
+    "SecurityAudit": {
+      "title": "SecurityAudit",
+      "description": "Administrative access and operation audit trail",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "Logged administrative action",
+          "maxLength": 128
+        },
+        "performedBy": {
+          "type": "string",
+          "description": "Admin UID or email who performed the action",
+          "maxLength": 128
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of action",
+          "maxLength": 64
+        },
+        "details": {
+          "type": "string",
+          "description": "Contextual details or quote reference",
+          "maxLength": 512
+        }
+      },
+      "required": ["action", "performedBy", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/quotes/{quoteId}": {
+      "schema": "Quote",
+      "description": "Stores client procurement quotes, scopes, and admin feedback"
+    },
+    "/admins/{userId}": {
+      "schema": "Admin",
+      "description": "Designated administrative users and roles"
+    },
+    "/securityAudits/{auditId}": {
+      "schema": "SecurityAudit",
+      "description": "Security logs for admin portal operations"
+    }
+  }
+}

@@ -1,0 +1,129 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Default-Deny Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened Global Helpers
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() &&
+        request.auth.token.email == 'lundujosh97@gmail.com' &&
+        request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isSuperAdmin() || (
+        isSignedIn() &&
+        request.auth.token.email_verified == true &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // Validation Blueprint for Quote Entity
+    function isValidQuote(data) {
+      return data.keys().hasAll(['id', 'clientName', 'clientEmail', 'clientCompany', 'createdAt', 'status', 'totalEstimate', 'items']) &&
+        data.keys().hasOnly(['id', 'clientName', 'clientEmail', 'clientCompany', 'createdAt', 'status', 'totalEstimate', 'items', 'userId', 'adminNotes', 'reviewedBy', 'reviewedAt', 'adminReviewedAt', 'adminReviewedBy', 'quotedAmount', 'itemPrices']) &&
+        data.id is string && data.id.size() >= 3 && data.id.size() <= 64 &&
+        data.clientName is string && data.clientName.size() >= 1 && data.clientName.size() <= 128 &&
+        data.clientEmail is string && data.clientEmail.size() >= 3 && data.clientEmail.size() <= 128 &&
+        data.clientCompany is string && data.clientCompany.size() >= 1 && data.clientCompany.size() <= 128 &&
+        data.createdAt is string && data.createdAt.size() <= 64 &&
+        data.status in ['Pending', 'Under Review', 'Quoted', 'Approved', 'Declined', 'Closed', 'Rejected'] &&
+        data.totalEstimate is number && data.totalEstimate >= 0 &&
+        data.items is list && data.items.size() <= 50 &&
+        (!('userId' in data) || (data.userId is string && data.userId.size() <= 128)) &&
+        (!('adminNotes' in data) || (data.adminNotes is string && data.adminNotes.size() <= 2048)) &&
+        (!('reviewedBy' in data) || (data.reviewedBy is string && data.reviewedBy.size() <= 128)) &&
+        (!('reviewedAt' in data) || (data.reviewedAt is string && data.reviewedAt.size() <= 64)) &&
+        (!('adminReviewedBy' in data) || (data.adminReviewedBy is string && data.adminReviewedBy.size() <= 128)) &&
+        (!('adminReviewedAt' in data) || (data.adminReviewedAt is string && data.adminReviewedAt.size() <= 64)) &&
+        (!('quotedAmount' in data) || (data.quotedAmount is number && data.quotedAmount >= 0));
+    }
+
+    // Validation Blueprint for Admin Record Entity
+    function isValidAdmin(data) {
+      return data.keys().hasAll(['email', 'role']) &&
+        data.keys().hasOnly(['email', 'role', 'createdAt']) &&
+        data.email is string && data.email.size() <= 128 &&
+        data.role in ['super_admin', 'admin', 'operations_desk'] &&
+        (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 64));
+    }
+
+    // Validation Blueprint for Security Audit Entity
+    function isValidSecurityAudit(data) {
+      return data.keys().hasAll(['action', 'performedBy', 'timestamp']) &&
+        data.keys().hasOnly(['action', 'performedBy', 'timestamp', 'details']) &&
+        data.action is string && data.action.size() <= 128 &&
+        data.performedBy is string && data.performedBy.size() <= 128 &&
+        data.timestamp is string && data.timestamp.size() <= 64 &&
+        (!('details' in data) || (data.details is string && data.details.size() <= 512));
+    }
+
+    // ==========================================
+    // 2. Quotes Collection Rules
+    // ==========================================
+    match /quotes/{quoteId} {
+      // Individual quote fetching (for invoice viewing or status lookup)
+      allow get: if isValidId(quoteId);
+
+      // List query enforcement: admin or authenticated user matching their own records
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+
+      // Creation rules: initial status must be 'Pending', immutable ID sync, valid schema
+      allow create: if isValidId(quoteId) &&
+        incoming().id == quoteId &&
+        isValidQuote(incoming()) &&
+        incoming().status == 'Pending' &&
+        (request.auth == null || !('userId' in incoming()) || incoming().userId == request.auth.uid);
+
+      // Updates restricted strictly to verified Administrators
+      allow update: if isValidId(quoteId) &&
+        isAdmin() &&
+        isValidQuote(incoming()) &&
+        incoming().id == existing().id &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'totalEstimate', 'adminNotes', 'reviewedBy', 'reviewedAt', 'adminReviewedAt', 'adminReviewedBy', 'quotedAmount', 'itemPrices', 'items']);
+
+      // Deletion restricted strictly to verified Administrators
+      allow delete: if isValidId(quoteId) && isAdmin();
+    }
+
+    // ==========================================
+    // 3. Admins Collection Rules
+    // ==========================================
+    match /admins/{userId} {
+      allow get: if isValidId(userId) && isAdmin();
+      allow list: if isAdmin();
+      allow create, update, delete: if isValidId(userId) && isSuperAdmin() && isValidAdmin(incoming());
+    }
+
+    // ==========================================
+    // 4. Security Audits Collection Rules
+    // ==========================================
+    match /securityAudits/{auditId} {
+      allow get, list: if isAdmin();
+      allow create: if isValidId(auditId) && isAdmin() && isValidSecurityAudit(incoming());
+      // Audit log entries are strictly append-only (no update or deletion permitted)
+      allow update, delete: if false;
+    }
+  }
+}

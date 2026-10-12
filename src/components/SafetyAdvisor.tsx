@@ -33,6 +33,10 @@ export default function SafetyAdvisor({ activeQuoteItems }: SafetyAdvisorProps) 
     {
       label: 'Food Supply & Hygiene Standards',
       text: 'What are the SANS 10049 and HACCP food safety standards required for catering and food supply services to remote mining camps?'
+    },
+    {
+      label: 'Crosby G-450 Rigging & Clamp Rules',
+      text: 'What are the ASME B30.26 and US Federal Spec FF-C-450 rules for Crosby G-450 wire rope clamp terminations, torque ratings, turnback length, and the "never saddle a dead horse" rule?'
     }
   ];
 

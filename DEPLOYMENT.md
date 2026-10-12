@@ -50,11 +50,19 @@ vercel --prod
 
 ## Important: Firebase Authentication & Authorized Domains
 
-Because this app uses Google Sign-In with Firebase:
+If you or a visitor sees an error when clicking "Sign In with Google" on your deployed Vercel site:
 
-1. Copy your Vercel deployment URL (e.g. `your-app.vercel.app`).
-2. Go to the [Firebase Console](https://console.firebase.google.com).
-3. Select your project: **`ai-studio-ndulugeneraldeal-c0184c7e-e088-456c-bdcb-3ccf481763cc`**
-4. Navigate to **Authentication** > **Settings** > **Authorized domains**.
-5. Click **Add domain** and enter your Vercel domain (e.g., `your-app.vercel.app`).
-6. Save. Google Sign-In and Admin verification will now work flawlessly on your live Vercel domain!
+> **Why does this happen?**
+> Firebase Authentication includes a security whitelist known as **Authorized Domains**. By default, new Firebase projects only authorize `localhost` and Google Cloud preview URLs. Whenever you deploy to Vercel (`*.vercel.app`), Firebase will block Google Sign-In with an `auth/unauthorized-domain` error until you add the domain.
+
+### 60-Second Fix:
+1. Copy your Vercel deployment URL (e.g. `ndulu-dealers.vercel.app` — **without** `https://` or trailing `/`).
+2. Open the [Firebase Console Authentication Settings](https://console.firebase.google.com/project/ai-studio-ndulugeneraldeal-c0184c7e-e088-456c-bdcb-3ccf481763cc/authentication/settings).
+3. Under the **Authorized domains** card, click **Add domain**.
+4. Paste your Vercel domain (e.g. `ndulu-dealers.vercel.app`) and click **Save**.
+5. Refresh your deployed app — Google Sign-In is now 100% active!
+
+### Note for Visitors & Mining Clients:
+- **No login is required for visitors!** Clients can browse mining hardware, explore heavy-duty spares, run safety compliance checks, configure tender scopes, and submit quote requests with zero sign-in.
+- Visitors can also click **Continue as Guest Visitor** right from the navigation bar or quote builder.
+

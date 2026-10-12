@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Trash2, FileSignature, Building, Mail, User, ShieldAlert, CheckCircle } from 'lucide-react';
+import { Trash2, FileSignature, Building, Mail, User, ShieldAlert, CheckCircle, UserCheck } from 'lucide-react';
 import { QuoteItem, Quote } from '../types';
 import { useAuth } from '../context/AuthContext';
 
@@ -18,7 +18,7 @@ export default function QuoteBuilder({
   onSubmitQuote,
   onNavigateToCatalog
 }: QuoteBuilderProps) {
-  const { user, signInWithGoogle } = useAuth();
+  const { user, isVisitor, setShowAuthModal } = useAuth();
 
   // Client Form Details
   const [clientName, setClientName] = useState(user?.displayName || '');
@@ -282,15 +282,29 @@ export default function QuoteBuilder({
                 <CheckCircle className="h-4 w-4 text-emerald-500 flex-shrink-0" />
                 <span className="truncate">Linked with Google ({user.email}) • Stored to Cloud Firestore</span>
               </div>
-            ) : (
-              <div className="p-2.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg text-amber-800 dark:text-amber-300 text-[11px] flex items-center justify-between">
-                <span>Want to track quotes on your Google account?</span>
+            ) : isVisitor ? (
+              <div className="p-2.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-lg text-emerald-800 dark:text-emerald-300 text-[11px] flex items-center justify-between">
+                <div className="flex items-center space-x-1.5">
+                  <UserCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <span><strong>Guest Visitor Access:</strong> Submit quote scopes with zero login needed.</span>
+                </div>
                 <button
                   type="button"
-                  onClick={() => signInWithGoogle()}
-                  className="font-bold underline text-amber-900 dark:text-amber-200 hover:text-amber-700 cursor-pointer"
+                  onClick={() => setShowAuthModal(true)}
+                  className="font-bold underline text-emerald-700 dark:text-emerald-300 hover:text-emerald-900 cursor-pointer text-[10px] ml-1 flex-shrink-0"
                 >
-                  Sign in with Google
+                  Account Options
+                </button>
+              </div>
+            ) : (
+              <div className="p-2.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg text-amber-800 dark:text-amber-300 text-[11px] flex items-center justify-between">
+                <span><strong>No login required:</strong> Visitors can submit tender scopes directly.</span>
+                <button
+                  type="button"
+                  onClick={() => setShowAuthModal(true)}
+                  className="font-bold underline text-amber-900 dark:text-amber-200 hover:text-amber-700 cursor-pointer ml-1 flex-shrink-0"
+                >
+                  Sign In / Visitor Mode
                 </button>
               </div>
             )}

@@ -51,7 +51,7 @@ export default function AdminDashboard({
   onDeleteQuote,
   showToast
 }: AdminDashboardProps) {
-  const { user, isAdmin, isSuperAdmin, signInWithGoogle, signOut, loading: authLoading } = useAuth();
+  const { user, isAdmin, isSuperAdmin, signInWithGoogle, signOut, loading: authLoading, setShowAuthModal } = useAuth();
 
   // Active Admin Sub-Tab: 'quotes' | 'security' | 'access'
   const [activeAdminTab, setActiveAdminTab] = useState<'quotes' | 'security' | 'access'>('quotes');
@@ -245,7 +245,13 @@ export default function AdminDashboard({
             </div>
 
             <button
-              onClick={() => signInWithGoogle()}
+              onClick={async () => {
+                try {
+                  await signInWithGoogle();
+                } catch (e) {
+                  setShowAuthModal(true);
+                }
+              }}
               disabled={authLoading}
               className="w-full py-3.5 px-4 bg-stone-900 dark:bg-stone-800 hover:bg-stone-800 dark:hover:bg-stone-700 text-white font-semibold text-xs rounded-xl border border-stone-700 transition-all flex items-center justify-center space-x-3 shadow-lg active:scale-95 cursor-pointer disabled:opacity-50"
             >

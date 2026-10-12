@@ -17,6 +17,7 @@ export default function InventoryCatalog({ onAddToQuote, activeQuoteItems }: Inv
   // Configuration State for adding to quote
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const [customSizeNote, setCustomSizeNote] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [addedNotification, setAddedNotification] = useState<string | null>(null);
 
@@ -33,10 +34,15 @@ export default function InventoryCatalog({ onAddToQuote, activeQuoteItems }: Inv
 
   // Filter products
   const filteredProducts = useMemo(() => {
+    const query = search.trim().toLowerCase();
     return inventory.filter(p => {
-      const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
-                            p.description.toLowerCase().includes(search.toLowerCase()) ||
-                            p.subcategory.toLowerCase().includes(search.toLowerCase());
+      const matchesSearch = !query ||
+                            p.name.toLowerCase().includes(query) ||
+                            p.description.toLowerCase().includes(query) ||
+                            p.subcategory.toLowerCase().includes(query) ||
+                            p.specifications.some(spec => spec.toLowerCase().includes(query)) ||
+                            p.sizes.some(size => size.toLowerCase().includes(query)) ||
+                            p.types.some(type => type.toLowerCase().includes(query));
       const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
       const matchesSubcategory = selectedSubcategory === 'All' || p.subcategory === selectedSubcategory;
       return matchesSearch && matchesCategory && matchesSubcategory;
@@ -47,11 +53,15 @@ export default function InventoryCatalog({ onAddToQuote, activeQuoteItems }: Inv
     setSelectedProduct(product);
     setSelectedSize(product.sizes[0] || 'Standard');
     setSelectedType(product.types[0] || 'Standard');
+    setCustomSizeNote('');
     setQuantity(1);
   };
 
   const handleAdd = (product: Product) => {
-    const finalSize = selectedSize || product.sizes[0] || 'Standard';
+    let finalSize = selectedSize || product.sizes[0] || 'Standard';
+    if (finalSize.toLowerCase().includes('custom') && customSizeNote.trim()) {
+      finalSize = `Custom mm: ${customSizeNote.trim()}`;
+    }
     const finalType = selectedType || product.types[0] || 'Standard';
     onAddToQuote(product, finalSize, finalType, quantity);
 
@@ -379,6 +389,21 @@ export default function InventoryCatalog({ onAddToQuote, activeQuoteItems }: Inv
                         <option key={s} value={s}>{s}</option>
                       ))}
                     </select>
+
+                    {selectedSize.toLowerCase().includes('custom') && (
+                      <div className="mt-2">
+                        <label className="block text-[10px] font-semibold text-amber-600 dark:text-amber-400 mb-0.5">
+                          Specify Diameter (e.g. 15mm, 42mm, etc.):
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 15mm diameter..."
+                          value={customSizeNote}
+                          onChange={(e) => setCustomSizeNote(e.target.value)}
+                          className="w-full bg-white dark:bg-stone-900 border border-amber-300 dark:border-amber-700 text-gray-900 dark:text-stone-100 rounded-lg py-1 px-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500"
+                        />
+                      </div>
+                    )}
                   </div>
 
                   {/* Type Config */}

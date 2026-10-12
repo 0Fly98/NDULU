@@ -12,6 +12,7 @@ import industrialFoodSupplyImg from '../assets/images/industrial_food_supply_178
 import heavyDutyHydraulicsImg from '../assets/images/heavy_duty_hydraulics_1791208457525.jpg';
 import crusherWearSparesImg from '../assets/images/crusher_wear_spares_1791208471585.jpg';
 import slurryPumpSparesImg from '../assets/images/slurry_pump_spares_1791208484890.jpg';
+import crosbyG450ClampImg from '../assets/images/crosby_g450_clamp_1791828576587.jpg';
 
 export const inventory: Product[] = [
   {
@@ -335,6 +336,58 @@ export const inventory: Product[] = [
     stockStatus: 'In Stock',
     sizes: ['200mm x 4.8mm (Pack of 100)', '300mm x 4.8mm (Pack of 100)', '370mm x 7.6mm Heavy Duty (Pack of 100)', '500mm x 9.0mm Ultra Heavy Duty (Pack of 100)'],
     types: ['UV Black Industrial Grade', 'Natural Clear Indoor Grade', 'Stainless Steel Locking Barb High-Tensile']
+  },
+  {
+    id: 'nd-hw-116',
+    name: 'Crosby G-450 Drop Forged Wire Rope Clip / Clamp',
+    category: 'Hardware',
+    subcategory: 'Rigging & Tools',
+    description: 'Genuine Crosby® (Grosby) G-450 Red-U-Bolt® drop-forged wire rope clips and clamps for heavy-duty industrial rigging, crane hoisting, mine shaft winch lines, and structural terminations. Features hot-dip galvanized drop-forged carbon steel saddles, heavy hex nuts, and the iconic red U-bolt. Every metric millimeter (mm) diameter is available from 3mm up to 78mm+ (1/8" to 3") for immediate supply across Copperbelt and regional mining operations.',
+    priceEstimate: 14.50,
+    specifications: [
+      'Genuine Crosby G-450 design with drop-forged steel saddle and hot-dip galvanized finish',
+      'Iconic Crosby Red-U-Bolt® for rapid visual safety inspection and authenticity verification',
+      'Material Product Identification Code (PIC) embossed on each saddle for 100% metallurgical traceability',
+      'All metric millimeter (mm) and imperial inch wire rope diameter sizes fully available in stock',
+      'Efficiency ratings: 80% for sizes 3mm through 22mm (1/8" - 7/8"), and 90% for sizes 24mm through 78mm (1" - 3")',
+      'Meets or exceeds all performance requirements of US Federal Specification FF-C-450 Type 1 Class 1',
+      'Heavy-duty forged hex nuts included, torqued according to ASME B30.26 turnback guidelines'
+    ],
+    safetyStandards: ['US Fed Spec FF-C-450 Type 1 Class 1', 'ASME B30.26 Rigging Hardware', 'SANS 687 / EN 13411-5 Wire Rope Grips', 'ISO 9001 Batch PIC Certified'],
+    image: crosbyG450ClampImg,
+    stockStatus: 'In Stock - Any mm Available',
+    sizes: [
+      '3mm - 4mm (1/8")',
+      '5mm (3/16")',
+      '6mm - 7mm (1/4")',
+      '8mm (5/16")',
+      '9mm - 10mm (3/8")',
+      '11mm - 12mm (7/16")',
+      '13mm (1/2")',
+      '14mm - 15mm (9/16")',
+      '16mm (5/8")',
+      '18mm - 20mm (3/4")',
+      '22mm (7/8")',
+      '24mm - 26mm (1")',
+      '28mm - 30mm (1-1/8")',
+      '32mm - 34mm (1-1/4")',
+      '36mm - 38mm (1-1/2")',
+      '44mm - 45mm (1-3/4")',
+      '50mm - 52mm (2")',
+      '56mm - 58mm (2-1/4")',
+      '64mm (2-1/2")',
+      '70mm (2-3/4")',
+      '76mm - 78mm (3")',
+      '89mm (3-1/2")',
+      'Any Custom mm Diameter (Specify in Scope)'
+    ],
+    types: [
+      'Genuine Crosby G-450 Red-U-Bolt® (Hot Dip Galvanized)',
+      'Heavy-Duty Mining Rigging Grade (Drop Forged Base)',
+      'Bulk Industrial Contractor Pack (Box of 50 Clamps)',
+      'Bulk Industrial Contractor Pack (Box of 100 Clamps)',
+      'Certified Rigging Pack with Mill Test Certificate (MTC)'
+    ]
   },
   {
     id: 'nd-spr-201',

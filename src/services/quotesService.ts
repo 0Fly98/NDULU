@@ -73,7 +73,25 @@ export async function saveQuoteToFirestore(quote: Quote): Promise<void> {
   const path = `quotes/${quote.id}`;
   try {
     const docRef = doc(db, 'quotes', quote.id);
-    await setDoc(docRef, quote);
+    // Sanitize object so undefined fields (e.g. userId for visitors) do not cause Firestore errors
+    const payload: Record<string, any> = {
+      id: quote.id,
+      clientName: quote.clientName,
+      clientEmail: quote.clientEmail,
+      clientCompany: quote.clientCompany,
+      createdAt: quote.createdAt,
+      status: quote.status,
+      totalEstimate: quote.totalEstimate,
+      items: quote.items
+    };
+    if (quote.userId) payload.userId = quote.userId;
+    if (quote.adminNotes) payload.adminNotes = quote.adminNotes;
+    if (quote.adminReviewedBy) payload.adminReviewedBy = quote.adminReviewedBy;
+    if (quote.adminReviewedAt) payload.adminReviewedAt = quote.adminReviewedAt;
+    if (quote.quotedAmount !== undefined) payload.quotedAmount = quote.quotedAmount;
+    if (quote.itemPrices) payload.itemPrices = quote.itemPrices;
+
+    await setDoc(docRef, payload);
   } catch (error) {
     handleFirestoreError(error, OperationType.CREATE, path);
   }

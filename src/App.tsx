@@ -10,6 +10,7 @@ import { Product, QuoteItem, Quote } from './types';
 import { ShieldCheck, Flame, Award, Zap } from 'lucide-react';
 import heroBgImage from './assets/images/mining_hero_bg_1785169655502.jpg';
 import { useAuth } from './context/AuthContext';
+import { AuthModal } from './components/AuthModal';
 import { 
   subscribeToQuotes, 
   saveQuoteToFirestore, 
@@ -18,7 +19,7 @@ import {
 } from './services/quotesService';
 
 export default function App() {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, showAuthModal, setShowAuthModal } = useAuth();
   const [currentTab, setCurrentTab] = useState<string>('catalog');
   const [activeQuoteItems, setActiveQuoteItems] = useState<QuoteItem[]>([]);
   const [savedQuotes, setSavedQuotes] = useState<Quote[]>([]);
@@ -411,6 +412,13 @@ export default function App() {
 
       {/* Professional Corporate Footer */}
       <Footer onNavigate={setCurrentTab} showToast={showToast} />
+
+      {/* Global Sign In & Visitor Access Modal */}
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => showToast('Authenticated with Google successfully!', 'success')}
+      />
     </div>
   );
 }

@@ -37,6 +37,10 @@ export default function SafetyAdvisor({ activeQuoteItems }: SafetyAdvisorProps) 
     {
       label: 'Crosby G-450 Rigging & Clamp Rules',
       text: 'What are the ASME B30.26 and US Federal Spec FF-C-450 rules for Crosby G-450 wire rope clamp terminations, torque ratings, turnback length, and the "never saddle a dead horse" rule?'
+    },
+    {
+      label: 'Hexagon Bolts & Torque Standards',
+      text: 'What are the ISO 898-1 standards, proof load differences, and recommended tightening torque values for Grade 8.8 vs Grade 10.9 metric hexagon bolts and heavy hex nuts in heavy industrial and mining vibrating machinery?'
     }
   ];
 

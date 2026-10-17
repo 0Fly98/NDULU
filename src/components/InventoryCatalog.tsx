@@ -393,11 +393,11 @@ export default function InventoryCatalog({ onAddToQuote, activeQuoteItems }: Inv
                     {selectedSize.toLowerCase().includes('custom') && (
                       <div className="mt-2">
                         <label className="block text-[10px] font-semibold text-amber-600 dark:text-amber-400 mb-0.5">
-                          Specify Diameter (e.g. 15mm, 42mm, etc.):
+                          Specify Custom Dimensions (e.g. M14 x 80mm, 42mm dia, custom length):
                         </label>
                         <input
                           type="text"
-                          placeholder="e.g. 15mm diameter..."
+                          placeholder="e.g. M14 x 80mm or custom mm dimensions..."
                           value={customSizeNote}
                           onChange={(e) => setCustomSizeNote(e.target.value)}
                           className="w-full bg-white dark:bg-stone-900 border border-amber-300 dark:border-amber-700 text-gray-900 dark:text-stone-100 rounded-lg py-1 px-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500"

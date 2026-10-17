@@ -13,6 +13,7 @@ import heavyDutyHydraulicsImg from '../assets/images/heavy_duty_hydraulics_17912
 import crusherWearSparesImg from '../assets/images/crusher_wear_spares_1791208471585.jpg';
 import slurryPumpSparesImg from '../assets/images/slurry_pump_spares_1791208484890.jpg';
 import crosbyG450ClampImg from '../assets/images/crosby_g450_clamp_1791828576587.jpg';
+import hexagonBoltsNutsImg from '../assets/images/hexagon_bolts_nuts_1792229782695.jpg';
 
 export const inventory: Product[] = [
   {
@@ -387,6 +388,49 @@ export const inventory: Product[] = [
       'Bulk Industrial Contractor Pack (Box of 50 Clamps)',
       'Bulk Industrial Contractor Pack (Box of 100 Clamps)',
       'Certified Rigging Pack with Mill Test Certificate (MTC)'
+    ]
+  },
+  {
+    id: 'nd-hw-117',
+    name: 'High-Tensile Hexagon Bolts & Heavy Hex Nuts (Grade 8.8 / 10.9 / 12.9 & Stainless)',
+    category: 'Hardware',
+    subcategory: 'Fasteners & Rigging',
+    description: 'Precision-engineered high-tensile hexagon head bolts and matching heavy hex nuts, manufactured to DIN 931 / DIN 933 (ISO 4014 / ISO 4017) and DIN 934 standards. Designed for extreme stress mining plant operations, heavy earthmoving chassis, crushing circuits, conveyor frames, and structural steel assemblies. Supplied in high-tensile Grade 8.8, Grade 10.9, and Grade 12.9 alloy steel, plus Hot-Dip Galvanized and 316 Stainless Steel for corrosive acid environments. Comprehensive range of metric millimeter thread sizes (M6 through M48) with all standard and custom shank lengths readily available for immediate delivery across Copperbelt mining sites.',
+    priceEstimate: 16.50,
+    specifications: [
+      'Hex head bolts manufactured in accordance with DIN 931 (partial thread) & DIN 933 (full thread) / ISO 4014 / ISO 4017',
+      'Supplied with matching DIN 934 / ISO 4032 heavy hexagon nuts and DIN 125A flat & DIN 127B spring washers',
+      'High-tensile Grade 8.8 (800 N/mm² tensile strength) and Grade 10.9 (1,040 N/mm²) for severe vibration and dynamic loading',
+      'Severe corrosion surface finishes: Hot-Dip Galvanized (HDG ISO 10684), Electro-Galvanized Zinc, Black Oxide, and 316 Stainless',
+      'Metric millimeter sizes in stock: M6, M8, M10, M12, M14, M16, M20, M24, M30, M36, M42, M48 with lengths from 16mm to 350mm+',
+      'Precision metric coarse & fine thread pitches with chamfered lead-in to prevent galling during high-torque assembly',
+      'Full batch traceability and 3.1 Mill Test Certificates (MTC) available for mining engineering compliance'
+    ],
+    safetyStandards: ['DIN 931 / DIN 933 / DIN 934 Certified', 'ISO 898-1 Fastener Mechanical Properties', 'SANS 1700 Fastener Standard', 'EN 15048 Structural Bolting'],
+    image: hexagonBoltsNutsImg,
+    stockStatus: 'In Stock - Any mm Available',
+    sizes: [
+      'M6 (Lengths 16mm - 60mm) + Nut & Washers',
+      'M8 (Lengths 20mm - 80mm) + Nut & Washers',
+      'M10 (Lengths 25mm - 100mm) + Nut & Washers',
+      'M12 (Lengths 30mm - 120mm) + Nut & Washers',
+      'M14 (Lengths 35mm - 130mm) + Nut & Washers',
+      'M16 (Lengths 40mm - 160mm) + Nut & Washers',
+      'M20 (Lengths 50mm - 200mm) + Nut & Washers',
+      'M24 (Lengths 60mm - 240mm) + Nut & Washers',
+      'M30 (Lengths 80mm - 300mm) + Nut & Washers',
+      'M36 (Lengths 100mm - 350mm) + Nut & Washers',
+      'M42 - M48 Heavy Flange & Mill Foundation Spec',
+      'Any Custom Metric mm Diameter & Length (Specify in Scope)'
+    ],
+    types: [
+      'Grade 8.8 High-Tensile Steel (Zinc Plated / Galvanized)',
+      'Grade 10.9 High-Tensile Alloy Steel (Black Oxide / Self-Colour)',
+      'Grade 12.9 Extreme Tensile Heavy Machinery Grade',
+      'Hot-Dip Galvanized (HDG) Severe Atmospheric Corrosion Grade',
+      'Stainless Steel 316 (Marine & Acid Leaching Plant Grade)',
+      'Contractor Bulk Pack (Box of 100 Sets with Nuts & Washers)',
+      'Contractor Heavy Crate (Box of 500 Sets with Nuts & Washers)'
     ]
   },
   {
